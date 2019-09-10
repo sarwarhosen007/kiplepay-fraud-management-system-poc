@@ -1,0 +1,14 @@
+GET        /                       controllers.HomeController.index
+
+# Spark call test
+
+GET        /home                   controllers.HomeController.home
+POST       /addBlackListEmail      controllers.HomeController.addBlackListEmail
+POST       /addBlackListIp         controllers.HomeController.addBlackListIp
+
+POST       /input                  controllers.InputController.readInput
+GET       /index                   controllers.ApplicationControllerInject.index
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /public/*file        controllers.Assets.at(path="/public", file)
+

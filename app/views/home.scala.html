@@ -1,0 +1,190 @@
+@(addEmailForm: Form[BlackListEmail],addIpForm: Form[BlackListIp],emailList: Array[String],ipList: Array[String])
+@import java.math.BigInteger; var i=1; var k=1
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Fraud Management System</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <!-- font-awsome css -->
+  <link rel="stylesheet" href="@routes.Assets.at("css/fontawsome-all.css")">
+  <link rel="stylesheet" href="@routes.Assets.at("css/normalize.css")">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="@routes.Assets.at("css/bootstrap.min.css")">
+  <!-- datatables -->
+  <link rel="stylesheet" href="@routes.Assets.at("css/dataTables.bootstrap.min.css")">
+  <link rel="stylesheet" href="@routes.Assets.at("css/datatables.min.css")">
+  <link rel="stylesheet" href="@routes.Assets.at("css/style.css")">
+
+  <meta name="theme-color" content="#fafafa">
+
+  <!-- <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
+  <script src="@routes.Assets.at("javascripts/jquery.min.js")"></script>
+  <script src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script> -->
+</head>
+<body>
+<!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+  <div class="fms-wrapper clearfix">
+      <div class="container">
+          <h2 class="text-center">Fraud Management System</h2>
+          <div class="col-sm-8 col-sm-offset-2">
+             <div class="fms-center">
+              <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#black_list_email">Black List Email</a></li>
+                <li><a data-toggle="tab" href="#black_list_ip">Black List IP</a></li>
+              </ul>
+
+              <div class="tab-content">
+                <div id="black_list_email" class="tab-pane fade in active">
+                   <button class="btn btn-info text-center" type="button" data-toggle="modal" data-target="#add_email">Add New Email</button>
+                    <div class="fms-datatable clearfix">
+                        <table id="fms-data" class="table" style="width:100%">
+                            <thead>
+                                <tr>
+                                  <th>SL</th>
+                                  <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for(email <- emailList) {
+                                  <tr>
+                                    <td>@i</td>
+                                    <td>@email</td>
+                                  </tr>
+                                  @{i = i+1}
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="black_list_ip" class="tab-pane fade">
+                    <button class="btn btn-info text-center" type="button" data-toggle="modal" data-target="#add_ip">Add New IP</button>
+                     <div class="fms-datatable clearfix">
+                        <table id="fms-ip" class="table" style="width:100%">
+                            <thead>
+                                <tr>
+                                  <th>SL</th>
+                                  <th>IP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for(ip <- ipList) {
+                                  <tr>
+                                    <td>@k</td>
+                                    <td>@ip</td>
+                                  </tr>
+                                  @{k = k+1}
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+              </div>
+             </div>
+          </div>
+          <footer class="col-sm-12">
+              <p class="text-center">© Copyright Kiple</p>
+          </footer>
+      </div>
+  </div>
+
+
+  <!-- Modal: ADD EMAIL -->
+  <div class="modal fade" id="add_email" tabindex="-1" role="dialog" aria-labelledby="add_emailLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          @helper.form(routes.HomeController.addBlackListEmail) {
+        <form action="#">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="add_emailLabel">Add Email</h4>
+          </div>
+          <div class="modal-body">
+              <div class="form-group">
+                  <input type="email" id="@{addEmailForm("email").id}" name="@{addEmailForm("email").label}" value="@{addEmailForm("email").value}"  class="form-control" placeholder="Enter email address">       
+              </div>
+          </div>
+          <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" value="Add">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+          </form>
+        }
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal: ADD IP -->
+  <div class="modal fade" id="add_ip" tabindex="-1" role="dialog" aria-labelledby="add_ipLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          @helper.form(routes.HomeController.addBlackListIp) {
+            <form action="#">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="add_ipLabel">Add IP</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="form-group">
+                      <input type="text" id="@{addIpForm("IP").id}" name="@{addIpForm("IP").label}" value="@{addIpForm("IP").value}" class="form-control" placeholder="Enter IP address">
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Add">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+          }
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script src="@routes.Assets.at("js/vendor/modernizr-3.7.1.min.js")"></script>
+  <script src="@routes.Assets.at("js/jquery.min.js")"></script>
+  <script>window.jQuery || document.write('<script src="@routes.Assets.at("js/vendor/jquery-3.3.1.min.js")"><\/script>')</script>
+  <script src="@routes.Assets.at("js/bootstrap.min.js")"></script>
+  <!-- datatable -->
+  <script src="@routes.Assets.at("js/dataTables.bootstrap.min.js")"></script>
+  <script src="@routes.Assets.at("js/dataTables.responsive.min.js")"></script>
+  <script src="@routes.Assets.at("js/jQuery.dataTables.min.js")"></script>
+  <script src="@routes.Assets.at("js/plugins.js")"></script>
+  <script src="@routes.Assets.at("js/main.js")"></script>
+
+
+  <script>
+      $('#fms-data, #fms-ip').DataTable({
+        responsive: true,
+        "searching": false,
+        "lengthChange": false,
+        "pageLength": 10,
+        "ordering":true,
+        "language": {
+          "paginate": {
+            "previous": "<i class='fas fa-angle-double-left'></i>",
+            "next": "<i class='fas fa-angle-double-right'></i>"
+          }
+      }
+      });
+  </script>
+
+  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+  <script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')
+  </script>
+  <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+
+</body>
+</html>
